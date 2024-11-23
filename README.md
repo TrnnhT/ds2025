@@ -9,6 +9,6 @@ Students are expected to:
 Student Info
 =========================
 
-* Student Name: USTH ICT1
-* Student ID: Not-Vietnamese
+* Student Name: Tran Hong Nhat
+* Student ID: BA12-143
 * Student Group ID: Not-for-now
