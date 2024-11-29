@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{listings}
+
+\title{File Transfer System: Client-Server Architecture}
+\author{}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Client Code}
+The client connects to the server and receives a file in chunks. The key steps are as follows:
+
+\begin{itemize}
+    \item The client creates a socket, connects to the server at IP address \texttt{127.0.0.1} on port \texttt{1001}, and prepares to receive a file.
+    \item The file is received in chunks of 1024 bytes using the \texttt{recv} function and saved locally as \texttt{file.txt}.
+    \item If there is no data received, the connection is closed, and the file is considered received.
+\end{itemize}
+
+The relevant part of the client code that handles file reception is:
+
+\begin{lstlisting}[language=Python]
+    client_socket.connect((ip_host, port))
+    with open(filename, 'wb') as transfer_file:
+        while True:
+            content = client_socket.recv(1024)
+            if not content:
+                break  
+            transfer_file.write(content)  
+\end{lstlisting}
+
+\section{Server Code}
+The server listens for incoming connections and sends a file to the client. The steps involved are:
+
+\begin{itemize}
+    \item The server creates a socket, binds it to the IP address \texttt{127.0.0.1} and port \texttt{1001}, and waits for a client to connect.
+    \item Once a connection is established, the server reads the file \texttt{file.txt} in chunks of 1024 bytes and sends it to the client.
+    \item If the file is not found or there is an error, the server sends an error message to the client.
+\end{itemize}
+
+The relevant part of the server code that handles file sending is:
+
+\begin{lstlisting}[language=Python]
+    connect, address = server_socket.accept()
+    with open(filename, 'rb') as file:
+        while True:
+            data = file.read(1024)
+            if not data:
+                break  
+            connect.send(data)
+\end{lstlisting}
+
+\section{File Transfer Process}
+The file transfer involves the following steps:
+
+\begin{itemize}
+    \item The client connects to the server via TCP at IP \texttt{127.0.0.1} and port \texttt{1001}.
+    \item The server accepts the connection, opens the file, and sends it in 1024-byte chunks.
+    \item The client receives the chunks, writes them to a file, and completes the transfer when all data is received.
+\end{itemize}
+
+The file transfer ends when the client receives all the data and closes the connection.
+
+\section{Conclusion}
+The client-server system successfully transfers a file from the server to the client using Python’s socket library. The transfer happens in chunks over a TCP connection, ensuring reliable delivery of data. Possible improvements include error handling for network issues, larger file support, and encryption for secure transmission.
+
+\end{document}
