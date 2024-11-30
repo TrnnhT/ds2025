@@ -11,4 +11,4 @@ Student Info
 
 * Student Name: Tran Hong Nhat
 * Student ID: BA12-143
-* Student Group ID: Not-for-now
+* Student Group ID: 01
