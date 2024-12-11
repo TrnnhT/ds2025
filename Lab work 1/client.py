@@ -3,7 +3,7 @@ import socket
 def client_program():
    
     ip_host = '127.0.0.1'  
-    port = 1001 
+    port = 7090
 
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client_socket.connect((ip_host, port))

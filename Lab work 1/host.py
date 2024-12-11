@@ -4,7 +4,7 @@ import os
 def host_program():
 
     ip_host = '127.0.0.1'  
-    port = 1001
+    port = 7090
     
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((ip_host, port))
