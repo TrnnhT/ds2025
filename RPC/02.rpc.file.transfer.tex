@@ -1,0 +1,58 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\title{Practical work 2}
+
+\begin{document}
+
+\maketitle
+
+\section*{RPC Service Design}
+The RPC service is implemented using Python's built-in \texttt{xmlrpc} library. The server hosts a function, \texttt{send\_file()}, which reads a file in binary mode and sends its content to the client.
+
+
+\section*{System Organization}
+The system consists of two components:
+\begin{enumerate}
+    \item \textbf{Server:} Hosts the RPC function for file transfer.
+    \item \textbf{Client:} Requests the file and saves it locally.
+\end{enumerate}
+
+
+\section*{Implementation}
+\subsection*{Code Snippet: Server}
+\begin{verbatim}
+from xmlrpc.server import SimpleXMLRPCServer
+import os
+
+def send_file():
+    filename = "file.txt"
+    if os.path.exists(filename):
+        with open(filename, 'rb') as file:
+            return file.read()
+    else:
+        return "Error"
+
+server = SimpleXMLRPCServer(("127.0.0.1", 7090))
+server.register_function(send_file, "send_file")
+server.serve_forever()
+\end{verbatim}
+
+\subsection*{Code Snippet: Client}
+\begin{verbatim}
+import xmlrpc.client
+
+client = xmlrpc.client.ServerProxy("http://127.0.0.1:7090")
+file_content = client.send_file()
+with open("received_file.txt", "wb") as file:
+    file.write(file_content)
+\end{verbatim}
+
+\section*{Who does what}
+\begin{itemize}
+    \item Tran Hong Nhat: ADjust the client and server code file
+\end{itemize}
+
+\end{document}
