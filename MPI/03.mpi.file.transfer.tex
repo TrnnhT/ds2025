@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amsmath}
+
+\title{Practical work 3}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+
+\section{Why MPI Implementation?}
+We used MPI (via mpi4py) because it is a robust and widely used framework for parallel programming. Its communication primitives (send, receive,...) simplify implementation for distributed tasks like file transfer.
+
+\section{System Design}
+The system adopts a master-worker architecture:
+\begin{itemize}
+    \item \textbf{Client:} Reads the file and divides it into chunks.
+    \item \textbf{Host:} Receive file chunks from the master and save them locally.
+\end{itemize}
+
+\section{System Organization}
+Each MPI process is assigned a rank:
+\begin{itemize}
+    \item Rank 0 (Host): Manages the file and sends chunks.
+    \item Other Ranks (Client): Receive and save file chunks.
+\end{itemize}
+
+
+\section{Code Implementation}
+The implementation utilizes mpi4py for communication. Below are snippets demonstrating key functions:
+
+\subsection{Host}
+\begin{lstlisting}[language=Python]
+if rank == 0:
+    with open(filename, 'rb') as file:
+        file_data = file.read()
+        for i in range(1, size):
+            comm.send(file_chunk, dest=i, tag=0)
+\end{lstlisting}
+
+\subsection{Client}
+\begin{lstlisting}[language=Python]
+if rank != 0:
+    data = comm.recv(source=0, tag=0)
+    with open(f'worker_{rank}_output.txt', 'wb') as file:
+        file.write(data)
+\end{lstlisting}
+
+\section{Who does what}
+- Host and Client adjust : Tran Hong Nhat
+\end{document}
